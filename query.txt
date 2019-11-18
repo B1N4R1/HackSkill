@@ -1,0 +1,6 @@
+SELECT software_running.id, software_running.softID, software_running.ramUsage, software.softType, software.softVersion, software.softName, software.softRam
+FROM software_running
+INNER JOIN software
+ON software_running.userID = software.userID
+WHERE software_running.userID = 750717 AND software_running.isNPC = '0' AND software_running.softID = software.id
+ORDER BY software_running.ramUsage DESC, software.softType, software.softVersion DESC

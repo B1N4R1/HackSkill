@@ -1,0 +1,40 @@
+# 2019: The log-analytics import are not necessary. Backup not necessary (but recommended)
+# 2019: The rest of the scripts are needed for smooth operations of the game
+
+00 * * * * /usr/bin/env python /var/www/cron2/updateCurStats.py >> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+00 * * * * /usr/bin/env python /var/www/cron2/updateRanking.py >> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+00 * * * * /usr/bin/env python /var/www/python/rank_generator.py >> /opt/lampp/htdocs/HE/game/cron.log 2>&1
+
+#00 * * * * 			/bin/sh		 	/opt/lampp/htdocs/HE/cron2/updateStatsAndRanking.sh		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+05,20,35,50 * * * * 		/usr/bin/python 	/opt/lampp/htdocs/HE/cron2/removeExpiredLogins.py		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+05,15,25,35,45,55 * * * * 	/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/defcon2.php			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+05,15,25,35,45,55 * * * *	/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/endWar2.php			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+40 * * * * 			/usr/bin/python 	/opt/lampp/htdocs/HE/cron2/removeExpiredHTMLPages.py 	>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+10 */3 * * *			/usr/bin/python 	/opt/lampp/htdocs/HE/cron2/antivirusNPC.py	 		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+*/15 * * * * 			/usr/bin/python 	/opt/lampp/htdocs/HE/cron2/restoreNPC.py			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+12 * * * * 			/usr/bin/python 	/opt/lampp/htdocs/HE/python/query_counter.py 500		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+*/15 * * * *			/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/generateMissions.php		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+*/30 * * * *			/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/safenetUpdate.php			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+* * * * *			/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/doomUpdater.php			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+* * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/cron2/newRoundUpdater.py		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+09 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/cron2/removeExpiredAccs.py		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+19 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/cron2/removeExpiredNPC.py		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+09 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/cron2/removeExpiredPremium.py		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+10 * * * *			/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/updateServerStats.php		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+19,49 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/python/badge_hunter.py			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+19 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/python/badge_hunter_all.py		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+02 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/cron2/removeDownNPC.py 		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+*/5 * * * *			/usr/bin/python		/opt/lampp/htdocs/HE/cron2/fbiUpdate.py      		>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+29 * * * *			/opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/backup_game.php			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+29 21,02,08,14 * * *            /opt/lampp/bin/php	/opt/lampp/htdocs/HE/cron/backup_forum.php			>> /opt/lampp/htdocs/HE/log/game/cron.log 2>&1
+
+
+
+#* * * * * /usr/bin/python /opt/piwik/misc/log-analytics/import_logs.py --url=http://piwik.hackerexperience.com/ --idsite=1 --log-format-name=nginx_json --token-auth=REDACTED /var/log/nginx/access.log --enable-http-errors --enable-http-redirects --enable-static --recorders=8 >> /var/log/remote/main.log 2>&1; cat /dev/null > /var/log/nginx/access.log
+
+*/5 * * * * /usr/bin/python /opt/piwik/misc/log-analytics/import_logs.py --url=http://piwik.hackerexperience.com/ --idsite=2 --log-format-name=nginx_json --token-auth=REDACTED /var/log/nginx/access_wiki.log --enable-http-errors --enable-http-redirects --enable-static --recorders=8 >> /var/log/remote/wiki.log 2>&1; cat /dev/null > /var/log/nginx/access_wiki.log
+
+*/5 * * * * /usr/bin/python /opt/piwik/misc/log-analytics/import_logs.py --url=http://piwik.hackerexperience.com/ --idsite=3 --log-format-name=nginx_json --token-auth=REDACTED /var/log/nginx/access_forum.log --enable-http-errors --enable-http-redirects --enable-static --recorders=8 >> /var/log/remote/forum.log 2>&1; cat /dev/null > /var/log/nginx/access_forum.log
+
+#40 4 * * * cat /dev/null > /var/log/remote/main.log > /var/log/remote/forum.log > /var/log/remote/wiki.log
+
